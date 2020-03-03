@@ -1,0 +1,31 @@
+table.origin-table {
+	border-collapse: collapse;
+	font-family: "times new roman",times;
+}
+
+table.origin-table th:only-child:empty {
+	display: none;
+}
+
+table.origin-table th {
+	border-bottom: 4px double #c4c4c4;
+	padding: 3px 10px;
+	text-align: right;
+	font-weight: normal;
+}
+
+table.origin-table th:not(:last-child) {
+}
+
+table.origin-table td {
+	border-bottom: 1px solid #c4c4c4;
+	padding: 3px 10px;
+	text-align: right;
+}
+
+table.origin-table tr:nth-child(2n+1) > td {
+}
+
+table.origin-table td:not(:last-child) {
+}
+

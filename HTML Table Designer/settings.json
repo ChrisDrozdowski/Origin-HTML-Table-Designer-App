@@ -1,0 +1,20 @@
+// 'fonts' is an object whose keys are the font face values for CSS
+// and their valuea are the display for the font face.
+// Some font names with spaces must be enclosed in double quotes.
+// Observe how the double quotes are escaped to ensure valid JSON.
+{
+	"fonts": {
+		"inherit":"Default",
+		"arial,helvetica,sans-serif":"Arial",
+		"arial black,helvetica,sans-serif":"Arial Black",
+			"\"courier new\",courier":"Courier New",
+			"georgia,palatino":"Georgia",
+			"helvetica":"Helvetica",
+			"\"MS PGothic\",sans-serif":"MS PGothic",
+			"simsun,serif":"SimSun",
+			"tahoma,arial,helvetica,sans-serif":"Tahoma",
+			"\"times new roman\",times":"Times New Roman",
+			"verdana,geneva":"Verdana"
+	}
+}
+

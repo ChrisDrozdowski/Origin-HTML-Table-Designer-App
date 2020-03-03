@@ -1,0 +1,40 @@
+table.origin-table {
+	border: 1.5px solid #666666;
+	border-collapse: collapse;
+}
+
+table.origin-table th:only-child:empty {
+	display: none;
+}
+
+table.origin-table th {
+	background-color: #000000;
+	border-bottom: 1px solid #666666;
+	padding: 1px 8px;
+	vertical-align: middle;
+	text-align: center;
+	font-weight: bold;
+	color: #ffffff;
+}
+
+table.origin-table th:not(:last-child) {
+	border-right: 1px solid #666666;
+}
+
+table.origin-table td {
+	background-color: rgb(255, 255, 255);
+	border-bottom: 1px solid #666666;
+	padding: 1px 8px;
+	vertical-align: middle;
+	text-align: right;
+	font-weight: normal;
+	color: rgb(0, 0, 0);
+}
+
+table.origin-table tr:nth-child(2n+1) > td {
+	background-color: #CCCCCC;
+}
+
+table.origin-table td:not(:last-child) {
+	border-right: 1px solid #666666;
+}

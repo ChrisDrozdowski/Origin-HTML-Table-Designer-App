@@ -1,0 +1,45 @@
+table.origin-table {
+	border: 1.5px solid #2a5785;
+	border-collapse: collapse;
+	font-family: "times new roman",times;
+}
+
+table.origin-table th:only-child:empty {
+	display: none;
+}
+
+table.origin-table th {
+	background-color: #1c6ea4;
+	border-bottom: 1px solid #ffffff;
+	padding: 2px 5px;
+	white-space: nowrap;
+	font-size: 14px;
+	font-weight: bold;
+	font-style: normal;
+	color: #ffffff;
+}
+
+table.origin-table th:not(:last-child) {
+	border-right: 1px solid #ffffff;
+}
+
+table.origin-table td {
+	background-color: #eeeeee;
+	border-bottom: 1px solid #333333;
+	padding: 2px 3px;
+	text-align: right;
+	white-space: nowrap;
+	font-size: 14px;
+	font-weight: normal;
+	font-style: normal;
+	color: rgb(0, 0, 0);
+}
+
+table.origin-table tr:nth-child(2n+1) > td {
+	background-color: #d0e4f5;
+}
+
+table.origin-table td:not(:last-child) {
+	border-right: 1px solid #333333;
+}
+

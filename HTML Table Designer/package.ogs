@@ -1,0 +1,16 @@
+/*
+Build the OPX for this App by running this script in Script or
+Command Window (command is below). It outputs HTML Table Designer.opx
+to your UFF.
+You can then move the OPX to whatever folder you want.
+Then, if necessary, you can even drag and drop OPX into
+Origin to this install App.
+
+run.file("%@AHTML Table Designer\package.ogs");
+*/
+
+// Have to compile this file first.
+if(run.LoadOC("OriginLab\OPXFile.cpp", 16) == 0)
+{
+	mkopx app:="HTML Table Designer" opx:="%YHTML Table Designer.opx";
+}

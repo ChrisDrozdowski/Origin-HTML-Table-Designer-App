@@ -1,0 +1,11 @@
+table.origin-table {
+	border-collapse: separate;
+}
+
+table.origin-table th {
+	border: none; background: none;
+}
+
+table.origin-table td {
+	border: none; background: none;
+}

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
+<script type="text/javascript" src="libs/jquery-3.2.1.min.js"></script>
+<link rel="stylesheet" href="libs/jquery.minicolors.css">
+<script type="text/javascript" src="libs/jquery.minicolors.min.js"></script>
+<link rel="stylesheet" href="libs/jquery-popdown/jquery.popdown.css">
+<script type="text/javascript" src="libs/jquery-popdown/jquery.popdown.min.js"></script>
+<script type="text/javascript" src="app.js"></script>
+<style>
+
+html, body {
+	margin: 0;
+	padding: 0;
+	background-color: #ffffff;
+	font-size: 14px;
+}
+
+#intro {
+	box-sizing: border-box;
+	margin: 0 10px 0 10px;
+}
+
+#buttons {
+	box-sizing: border-box;
+	position: fixed;
+	left: 10px; right: 10px; bottom: 10px;
+	vertical-align: middle;
+}
+
+#buttons select {
+	box-sizing: border-box;
+	display: inline-block;
+	margin: 0 10px 0 0;
+	border: 1px solid ThreeDDarkShadow;
+	font-size: 1.05rem;
+}
+
+#buttons button {
+	box-sizing: border-box;
+	display: inline-block;
+	margin: 0 10px 0 0;
+	padding: 3px 10px 3px 10px;
+	border: 1px solid ThreeDDarkShadow;
+}
+
+#buttons label {
+	box-sizing: border-box;
+	display: inline-block;
+	margin: 0 2px 0 0;
+	font-size: 1.05rem;
+}
+
+#buttons .right {
+	float: right;
+	clear: both;
+	margin: 0;
+}
+
+#buttons select:hover, #buttons button:hover {
+	border-color: Highlight;
+}
+
+#ctrls-container {
+	box-sizing: border-box;
+	position: fixed;
+	top: 50px; left: 10px; right: 10px; bottom: 60px;
+	overflow-y: auto;
+}
+
+fieldset {
+	box-sizing: border-box;
+	display: block;
+	margin: 0 10px 20px 0;
+	padding: 10px;
+	border: 1px solid ThreeDDarkShadow;
+}
+
+legend {
+	cursor: pointer;
+	box-sizing: border-box;
+	display block:
+	border: 1px solid ThreeDDarkShadow;
+}
+
+legend::before {
+	content: "\2796";
+	font-weight: bold;
+}
+
+legend:hover::before {
+	font-weight: bold;
+	color: Highlight;
+}
+
+legend.closed::before {
+	content: "\2795";
+}
+
+div.control-group {
+	vertical-align: top;
+	margin: 0 0 0.75rem 0;
+}
+
+div.control-group label {
+	box-sizing: border-box;
+	display: inline-block;
+	margin: 0 10px 0 0;
+	padding: 0;
+}
+
+div.control-group select {
+	box-sizing: border-box;
+	display: inline-block;
+	margin: 0 10px 0 0;
+	padding: 0;
+	width: 8rem;
+	border: 1px solid ThreeDDarkShadow;
+}
+
+input[type="text"] {
+	box-sizing: border-box;
+	display: inline-block;
+	margin: 0 10px 0 0;
+	padding: 0;
+	width: 5rem;
+	border: 1px solid ThreeDDarkShadow;
+}
+
+input[type="checkbox"] {
+	box-sizing: border-box;
+	display: inline-block;
+	margin: 0 2px 0 0;
+	padding: 0;
+	border: 1px solid ThreeDDarkShadow;
+}
+
+input[type="color"] {
+	/*jQuery MiniColors has problems with some styles applid to other controls*/
+	/*box-sizing: border-box; Breaks color control*/
+	display: inline-block;
+	margin-right: 10px;
+	padding: 0;
+	border: 1px solid ThreeDDarkShadow;
+}
+
+input[type="range"] {
+	box-sizing: border-box;
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	width: 5rem;
+	height: 20px;
+	/*Must specifically set vertical-align for the range controls. The vertical align for all other controls is set by div.control-group selector.*/
+	vertical-align: middle;
+}
+
+input[type="range"]:focus {
+	outline: none;
+}
+
+input[type="range"]::-ms-thumb {
+	height: 16px;
+	width: 6px;
+	border: 1px solid black;
+	border-radius: 2px;
+	background: Highlight;
+	box-shadow: 1px 1px 2px ThreeDDarkShadow;
+}
+
+input[type="range"]:disabled::-ms-thumb {
+	background: ButtonFace;
+}
+
+input[type="range"]::-ms-track {
+	height: 8px;
+	background: transparent;
+	color: transparent;
+	border-width: 1px;
+	border-color: ThreeDDarkShadow;
+	border-radius: 3px;
+
+}
+
+input[type="range"]::-ms-fill-lower {
+	background: ThreeDShadow;
+}
+
+input[type="range"]::-ms-fill-upper {
+	background: ThreeDShadow;
+}
+
+input[type="range"]::-ms-ticks-before {
+}
+
+input[type="range"]::-ms-ticks-after {
+}
+
+input[type="range"]::-ms-tooltip {
+}
+
+input[data-toggle] {
+	display: none;
+}
+
+input[data-const] {
+	display: none;
+}
+
+span.val-display {
+	box-sizing: border-box;
+	display: inline-block;
+	width: 2.75rem;
+	margin: 0;
+	padding: 0;
+	color: Highlight;
+}
+
+span.arrow {
+	box-sizing: border-box;
+	display: inline-block;
+	font-weight: bold;
+}
+
+.hidden {
+	display: none;
+}
+
+.warning {
+	color: red;
+	font-size:200%;
+}
+
+.instructions {
+	display: block;
+	margin-left: 2em;
+	font-size: 90%;
+	font-style:italic;
+}
+
+</style>
+</head>
+<body>
+<!-- Classes are for jquery-popdown plugin -->
+<p id="intro"><span class="warning">&#x26a0;</span> <a id="help-link" class="popdown btn" href="#" title="Opens instructions popup.">Click here</a> to learn how to use this App. <strong><em>Please read!</em></strong></p>
+
+<!-- Begin CSS property control groups -->
+<!--
+These groups control what CSS selectors and properties are generated by the App.
+
+The css property control groups below follow a pattern:
+	1.	A wrapper div for each individual property.
+		It contains a number of data-* attributes including:
+			data-css-selector	The css selector to which the property belongs.
+			data-css-property	The css version of the property name.
+			data-js-property	The javascript version of the property name.
+
+	2. A checkbox child element with two data-* attributes to locate it
+		in via javascript:
+			data-control	No value assigned.
+			data-enabler	No value assigned.
+		The checkbox enables/disables the given property controls.
+		Properties are not output to the generated css.
+
+	3. One or more control elements for setting property values.
+		Properties that have multiple values usually have multiple controls
+		but not always.
+		These controls have a number data-* attributes:
+			data-control	No value assigned.
+			data-value		The value for the control. Synced with the value
+							property of the control. Initially, it is the
+							default value without units (if applicable).
+			data-units		The units for the control,if any (e.g. px).
+			data-index		In javascript, property values are converted into
+							an array for processing purposes.
+							This is the 0-based index of the value for the
+							control in the array.
+							Observe, in some cases, the indices are out of order.
+							This is due to the fact that style.sheet.cssRules is
+							used to parse CSS and it may use funky ordering in short
+							hand properties.
+							Some controls may have multiple indexes and if so,
+							they are separated by commas.
+			data-toggle		Optional. No value assigned. Indicates that
+							the control toggles on and off it's data-value.
+							Only one control- input type text.
+							Control is hidden.
+			data-const		Optional. No value assigned. Indicates that
+							the control's data-value is always assigned.
+							Only one control- input type text. Checkbox
+							and label elements not used.
+							Control is hidden.
+
+
+Important Note:	If you want to use nth-child(odd) or nth-child(even), don't!
+				Use nth-child(2n+1) or nth-child(2n).
+-->
+
+<div id="ctrls-container">
+<fieldset>
+	<legend>Table Properties</legend>
+	<div>
+		<div class="control-group" data-css-selector="table.origin-table" data-css-property="border" data-js-property="border">
+			<label title="Add a border to the table by setting its Width, Style, and Color."><input type="checkbox" class="" data-control data-enabler>Border</label>
+			<input type="range" class="" title="Width" min="1" max="5.5" step="0.5" data-control data-value="1" data-units="px" data-index="0">
+			<span class="val-display"></span>
+			<select class="" title="Style" data-control data-value="solid" data-units="" data-index="1">
+				<option value="solid" selected>Solid</option><option value="dotted">Dotted</option><option value="dashed">Dashed</option>
+				<option value="double">Double</option><option value="groove">Groove</option><option value="ridge">Ridge</option>
+				<option value="inset">Inset</option><option value="outset">Outset</option>
+			</select>
+			<input type="color" class="color-ctrl-bottom" title="Color" data-control data-value="#000000" data-units="" data-index="2">
+			<span class="instructions">If using Horizontal Dividers and you want a Table Border, make it a bit wider for proper display.</span>
+		</div>
+		<!--
+		<div class="control-group" data-css-selector="table.origin-table" data-css-property="outline" data-js-property="outline">
+			<label title="Add an outline around the table by setting its Width, Style, and Color."><input type="checkbox" class="" data-control data-enabler>Outline</label>
+			<input type="range" class="" title="Width" min="1" max="5.5" step="0.5" data-control data-value="1" data-units="px" data-index="2">
+			<span class="val-display"></span>
+			<select class="" title="Style" data-control data-value="solid" data-units="" data-index="1">
+				<option value="solid" selected>Solid</option><option value="dotted">Dotted</option><option value="dashed">Dashed</option>
+				<option value="double">Double</option><option value="groove">Groove</option><option value="ridge">Ridge</option>
+				<option value="inset">Inset</option><option value="outset">Outset</option>
+			</select>
+			<input type="color" class="color-ctrl-bottom" title="Color" data-control data-value="#000000" data-units="" data-index="0">
+		</div>
+		-->
+		<div class="control-group" data-css-selector="table.origin-table" data-css-property="border-collapse" data-js-property="borderCollapse">
+			<!--<label title=""><input type="checkbox" class="" data-control data-enabler>Border Collapse</label>-->
+			<input type="text" class="" title="" data-control data-const data-value="collapse" data-units="" data-index="0">
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table" data-css-property="margin" data-js-property="margin">
+			<label title="Center the table in whatever container it ends up in."><input type="checkbox" class="" data-control data-enabler>Centered</label>
+			<input type="text" class="" title="" data-control data-toggle data-value="0 auto" data-units="" data-index="0,1">
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table" data-css-property="font-family" data-js-property="fontFamily">
+			<label title="Chose the font that will be used for text in the table."><input type="checkbox" class="" data-control data-enabler>Font Family</label>
+			<!-- The options and data-value attribute for the following select are generated via Javascript -->
+			<select class="" title="Font face" data-control data-value="" data-units="" data-index="0,1,2,3,4,4,6"></select> <!-- Need to use multiple indexes to ensure font family is parsed correctly -->
+		</div>
+	</div>
+</fieldset>
+<fieldset>
+	<legend>Header Properties</legend>
+	<div>
+		<!-- Hidden and always on -->	
+		<div class="control-group hidden" data-css-selector="table.origin-table th:only-child:empty" data-css-property="display" data-js-property="display">
+			<!--<label title=""><input type="checkbox" class="" data-control data-enabler>Hide Empty Header Rows</label>-->
+			<input type="text" class="" title="" data-control data-const data-value="none" data-units="" data-index="0">
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table th" data-css-property="background-color" data-js-property="backgroundColor">
+			<label title="Set the background color for table headers."><input type="checkbox" class="" data-control data-enabler>Background Color</label>
+			<input type="color" class="color-ctrl-bottom" title="Color" data-control data-value="#ffffff" data-units="" data-index="0">
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table th:not(:last-child)" data-css-property="border-right" data-js-property="borderRight">
+			<label title="Add vertical divider lines between each header by setting their Width, Style, and Color."><input type="checkbox" class="" data-control data-enabler>Vertical Dividers</label>
+			<input type="range" class="" title="Width" min="1" max="5" step="0.5" data-control data-value="1" data-units="px" data-index="0">
+			<span class="val-display"></span>
+			<select class="" title="Style" data-control data-value="solid" data-units="" data-index="1">
+				<option value="solid" selected>Solid</option><option value="dotted">Dotted</option><option value="dashed">Dashed</option>
+				<option value="double">Double</option><option value="groove">Groove</option><option value="ridge">Ridge</option>
+				<option value="inset">Inset</option><option value="outset">Outset</option>
+			</select>
+			<input type="color" class="color-ctrl-bottom" title="Color" data-control data-value="#000000" data-units="" data-index="2">
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table th" data-css-property="border-bottom" data-js-property="borderBottom">
+			<label title="Add horizontal divider lines between each header by setting their Width, Style, and Color."><input type="checkbox" class="" data-control data-enabler>Horizontal Dividers</label>
+			<input type="range" class="" title="Width" min="1" max="5" step="0.5" data-control data-value="1" data-units="px" data-index="0">
+			<span class="val-display"></span>
+			<select class="" title="Style" data-control data-value="solid" data-units="" data-index="1">
+				<option value="solid" selected>Solid</option><option value="dotted">Dotted</option><option value="dashed">Dashed</option>
+				<option value="double">Double</option><option value="groove">Groove</option><option value="ridge">Ridge</option>
+				<option value="inset">Inset</option><option value="outset">Outset</option>
+			</select>
+			<input type="color" class="color-ctrl-bottom" title="Color" data-control data-value="#000000" data-units="" data-index="2">
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table th" data-css-property="padding" data-js-property="padding">
+			<label title="Set vertical and horizontal padding for headers."><input type="checkbox" class="" data-control data-enabler>Cell Padding</label>
+			<span class="arrow">&#8597;</span>
+			<input type="range" class="" title="Vertical" min="1" max="20" step="0.5" data-control data-value="1" data-units="px" data-index="0">
+			<span class="val-display"></span>
+			<span class="arrow">&#8596;</span>
+			<input type="range" class="" title="Horizontal" min="1" max="20" step="0.5" data-control data-value="1" data-units="px" data-index="1">
+			<span class="val-display"></span>
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table th" data-css-property="vertical-align" data-js-property="verticalAlign">
+			<label title="Set the vertical alignment for header text."><input type="checkbox" class="" data-control data-enabler>Vertical Alignment</label>
+			<select class="" title="Align" data-control data-value="middle" data-units="" data-index="0">
+				<option value="middle">Middle</option>
+				<option value="top">Top</option>
+				<option value="bottom">Bottom</option>
+			</select>
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table th" data-css-property="text-align" data-js-property="textAlign">
+			<label title="Set the horizontal alignment for header text."><input type="checkbox" class="" data-control data-enabler>Horizontal Alignment</label>
+			<select class="" title="Align" data-control data-value="center" data-units="" data-index="0">
+				<option value="center">Center</option>
+				<option value="left">Left</option>
+				<option value="right">Right</option>
+			</select>
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table th" data-css-property="white-space" data-js-property="whiteSpace">
+			<label title="Prevent text in headers from wrapping to new lines."><input type="checkbox" class="" data-control data-enabler>Prevent Wrapping of Content</label>
+			<input type="text" class="" title="" data-control data-toggle data-value="nowrap" data-units="" data-index="0">
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table th" data-css-property="font-size" data-js-property="fontSize">
+			<label title="Set the font size for header text."><input type="checkbox" class="" data-control data-enabler>Font Size</label>
+			<input type="range" class="" title="Size" min="8" max="24" step="1" data-control data-value="12" data-units="px" data-index="0">
+			<span class="val-display"></span>
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table th" data-css-property="font-weight" data-js-property="fontWeight">
+			<label title="Set the font weight (e.g. bold) for header text."><input type="checkbox" class="" data-control data-enabler>Font Weight</label>
+			<select class="" title="Weight" data-control data-value="normal" data-units="" data-index="0">
+				<option value="normal">Normal</option>
+				<option value="bold">Bold</option>
+			</select>
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table th" data-css-property="font-style" data-js-property="fontStyle">
+			<label title="Set the font style (e.g. italic) for header text."><input type="checkbox" class="" data-control data-enabler>Font Style</label>
+			<select class="" title="Style" data-control data-value="normal" data-units="" data-index="0">
+				<option value="normal">Normal</option>
+				<option value="italic">Italic</option>
+			</select>
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table th" data-css-property="color" data-js-property="color">
+			<label title="Set the color of header text."><input type="checkbox" class="" data-control data-enabler>Text Color</label>
+			<input type="color" class="color-ctrl-bottom" title="Color" data-control data-value="#000000" data-units="" data-index="0">
+		</div>
+	</div>
+</fieldset>
+<fieldset>
+	<legend>Data Properties</legend>
+	<div>
+		<div class="control-group" data-css-selector="table.origin-table td" data-css-property="background-color" data-js-property="backgroundColor">
+			<label title="Set the background color for data cells."><input type="checkbox" class="" data-control data-enabler>Background Color</label>
+			<input type="color" class="color-ctrl-bottom" title="Color" data-control data-value="#ffffff" data-units="" data-index="0">
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table tr:nth-child(2n+1) > td" data-css-property="background-color" data-js-property="backgroundColor">
+			<label title="Set the color to use for &quot;striping&quot; data cells."><input type="checkbox" class="" data-control data-enabler>Stripe Color</label>
+			<input type="color" class="color-ctrl-bottom" title="Color" data-control data-value="#ffffff" data-units="" data-index="0">
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table td:not(:last-child)" data-css-property="border-right" data-js-property="borderRight">
+			<label title="Add vertical divider lines between each header by setting their Width, Style, and Color."><input type="checkbox" class="" data-control data-enabler>Vertical Dividers</label>
+			<input type="range" class="" title="Width" min="1" max="5" step="0.5" data-control data-value="1" data-units="px" data-index="0">
+			<span class="val-display"></span>
+			<select class="" title="Style" data-control data-value="solid" data-units="" data-index="1">
+				<option value="solid" selected>Solid</option><option value="dotted">Dotted</option><option value="dashed">Dashed</option>
+				<option value="double">Double</option><option value="groove">Groove</option><option value="ridge">Ridge</option>
+				<option value="inset">Inset</option><option value="outset">Outset</option>
+			</select>
+			<input type="color" class="color-ctrl-bottom" title="Color" data-control data-value="#000000" data-units="" data-index="2">
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table td" data-css-property="border-bottom" data-js-property="borderBottom">
+			<label title="Add horizontal divider lines between each header by setting their Width, Style, and Color."><input type="checkbox" class="" data-control data-enabler>Horizontal Dividers</label>
+			<input type="range" class="" title="Width" min="1" max="5" step="0.5" data-control data-value="1" data-units="px" data-index="0">
+			<span class="val-display"></span>
+			<select class="" title="Style" data-control data-value="solid" data-units="" data-index="1">
+				<option value="solid" selected>Solid</option><option value="dotted">Dotted</option><option value="dashed">Dashed</option>
+				<option value="double">Double</option><option value="groove">Groove</option><option value="ridge">Ridge</option>
+				<option value="inset">Inset</option><option value="outset">Outset</option>
+			</select>
+			<input type="color" class="color-ctrl-bottom" title="Color" data-control data-value="#000000" data-units="" data-index="2">
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table td" data-css-property="padding" data-js-property="padding">
+			<label title="Set vertical and horizontal padding for data cells."><input type="checkbox" class="" data-control data-enabler>Cell Padding</label>
+			<span class="arrow">&#8597;</span>
+			<input type="range" class="" title="Vertical" min="1" max="20" step="0.5" data-control data-value="1" data-units="px" data-index="0">
+			<span class="val-display"></span>
+			<span class="arrow">&#8596;</span>
+			<input type="range" class="" title="Horizontal" min="1" max="20" step="0.5" data-control data-value="1" data-units="px" data-index="1">
+			<span class="val-display"></span>
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table td" data-css-property="vertical-align" data-js-property="verticalAlign">
+			<label title="Set the vertical alignment for data text."><input type="checkbox" class="" data-control data-enabler>Vertical Alignment</label>
+			<select class="" title="Align" data-control data-value="middle" data-units="" data-index="0">
+				<option value="middle">Middle</option>
+				<option value="top">Top</option>
+				<option value="bottom">Bottom</option>
+			</select>
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table td" data-css-property="text-align" data-js-property="textAlign">
+			<label title="Set the horizontal alignment for data text."><input type="checkbox" class="" data-control data-enabler>Horizontal Alignment</label>
+			<select class="" title="Align" data-control data-value="center" data-units="" data-index="0">
+				<option value="center">Center</option>
+				<option value="left">Left</option>
+				<option value="right">Right</option>
+			</select>
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table td" data-css-property="white-space" data-js-property="whiteSpace">
+			<label title="Prevent text in data cells from wrapping to new lines."><input type="checkbox" class="" data-control data-enabler>Prevent Wrapping of Content</label>
+			<input type="text" class="" title="" data-control data-toggle data-value="nowrap" data-units="" data-index="0"><!-- Keep default data-value -->
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table td" data-css-property="font-size" data-js-property="fontSize">
+			<label title="Set the font size for data text."><input type="checkbox" class="" data-control data-enabler>Font Size</label>
+			<input type="range" class="" title="Size" min="8" max="24" step="1" data-control data-value="12" data-units="px" data-index="0">
+			<span class="val-display"></span>
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table td" data-css-property="font-weight" data-js-property="fontWeight">
+			<label title="Set the font weight (e.g. bold) for data text."><input type="checkbox" class="" data-control data-enabler>Font Weight</label>
+			<select class="" title="Weight" data-control data-value="normal" data-units="" data-index="0">
+				<option value="normal">Normal</option>
+				<option value="bold">Bold</option>
+			</select>
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table td" data-css-property="font-style" data-js-property="fontStyle">
+			<label title="Set the font style (e.g. italic) for data text."><input type="checkbox" class="" data-control data-enabler>Font Style</label>
+			<select class="" title="Style" data-control data-value="normal" data-units="" data-index="0">
+				<option value="normal">Normal</option>
+				<option value="italic">Italic</option>
+			</select>
+		</div>
+
+		<div class="control-group" data-css-selector="table.origin-table td" data-css-property="color" data-js-property="color">
+			<label title="Set the color of data text."><input type="checkbox" class="" data-control data-enabler>Text Color</label>
+			<input type="color" class="color-ctrl-top" title="Color" data-control data-value="#000000" data-units="" data-index="0">
+		</div>
+
+	</div>
+</fieldset>
+</div><!-- Close <div id="ctrls-container"> -->
+<!-- End CSS property control groups -->
+
+<div id="buttons">
+	<label title="Load a style from a list of saved styles">Saved Styles</label>
+	<select id="sel-styles" class="left" title="Load a previously saved style based on the selected name. An Example is sprovided."></select>
+	<button id="btn-preview" class="left" title="Opens a Notes window with simulated tables to see how the current style settings look.">Preview</button>
+	<button id="btn-save" class="left" title="Saves the current style settings for future reuse. They appear in the styles dropdown control.">Save</button>
+	<button id="btn-copy" class="left" title="Copies the current style settings to the clipboard for easy pasting into Notes window.">Copy to Clipboard</button>
+	<button id="btn-export" class="left" title="Export the current style settings to an external CSS file.">Export</button>
+	<button id="btn-import" class="left" title="Import an external CSS file previously saved with this App.">Import</button>
+	<button id="btn-close" class="right" title="Close dialog.">Close</button>
+</div><!-- Close <div id="buttons"> -->
+
+<script>
+
+window.addEventListener("load", function(event){
+
+	// An object named App is created in app.js.
+	// This is a constructor, allowing it to be intialized.
+	App.create();
+});
+
+</script>
+</body>
+</html>

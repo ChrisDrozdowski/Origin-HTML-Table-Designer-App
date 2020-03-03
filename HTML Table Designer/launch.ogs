@@ -1,0 +1,9 @@
+[Main]
+// Script to launch the App when AppIcon is clicked.
+if(run.LoadOC("%@AHTML Table Designer\htmltabledesigner.cpp", 16) == 0)
+{
+	HTMLTableDesignerApp_Run();
+}
+
+[AfterInstall]
+// Script set to run in After Install event during OPX installation.

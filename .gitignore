@@ -1,52 +1,48 @@
-# Prerequisites
-*.d
+# Whitelist-based approach to files and directories associated with this project.
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+# First ignore everything.
+*
 
-# Linker output
-*.ilk
-*.map
-*.exp
+# Whitelist directories.
+!*/
 
-# Precompiled Headers
-*.gch
-*.pch
+# Whitelist basic Git files.
+!.gitignore
+!LICENSE
+!*.md
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
+# Whitelist Origin source code files.
+!*.h
+!*.c
+!*.cpp
+!*.ogs
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
+# Whitelist web source code files.
+!*.html
+!*.js
+!*.css
+!*.json
 
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+# Whitelist image files.
+!*.png
+!*.bmp
+!*.gif
+!*.svg
+!*.jpg
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
+# Whitelist web font files.
+!*.ttf
+!*.eot
+!*.woff
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+# Whitelist Origin files
+!*.opx
+!*.opju
+!*.ogwu
+!*.otwu
+
+# Whitelist other files
+!*.txt
+!*.ini
+!*.pdf
+!*.zip

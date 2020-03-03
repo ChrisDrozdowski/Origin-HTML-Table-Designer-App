@@ -1,0 +1,69 @@
+/* --------------------------------------------- */
+/* 			 Popdown Plugin Styling              */
+/* --------------------------------------------- */
+
+/* The dark transparent background */
+#popdown-opacity {
+	background: url(blend-bg.png) repeat;
+}
+/* The whole dialog itself */
+#popdown-dialog {
+	background-color: #fff;
+	-webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* The dialog loading indicator */
+.popdown-loading {
+	padding: 20px;
+	background: url(popdown-loading.gif) no-repeat center center;
+}
+
+/* This is the "title" in the shaded title bar */
+div.popdown-content header h2 {
+	margin: 0 0 10px 0;
+	padding: 0;
+	background-color: #f0f0f0;
+	font-size: 16px;
+	text-align: left;
+	padding: 10px 10px;
+	font-weight: bold;
+	color: #464646;
+}
+
+/* Body part of dialog */
+div.popdown-content .body {
+	padding: 10px 20px 20px 20px;
+	overflow-y: auto;
+	max-height: 60vh;
+	font-size: 13px;
+	color: #464646;
+}
+
+/* Footer containing the close button */
+div.popdown-content footer {
+	padding: 20px 20px 20px 0;
+	text-align: right;
+}
+
+/* Close button */
+div.popdown-content footer button {
+	margin: 0;
+	padding: 8px 20px;
+	background-color: #f0f0f0;
+	border: none;
+	font-family: inherit;
+	font-size: 14px;
+	cursor: pointer;
+	outline: none;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+/* Close button hover */
+div.popdown-content footer button:hover {
+	background-color: Highlight; /* OS highlight color */
+	font-family: inherit;
+}
