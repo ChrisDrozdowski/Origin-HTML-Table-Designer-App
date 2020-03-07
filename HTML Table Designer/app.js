@@ -60,9 +60,15 @@ init: function()
 
 	$('#btn-import').on('click', function(evt){
 		self.blockLivePreview = true;
-		self.importStyle();
+		var b = self.importStyle();
 		self.blockLivePreview = false;
 		self.previewStyle();
+		if (b) {
+			setTimeout(function(){
+				if (6 == window.external.ExtCall('OCMessageBox', "Do you want to save the imported style?", "Save Imported Style", 4|32))
+					$('#btn-save').click();	
+			}, 250);
+		}
 	});
 
 	$('#btn-copy').on('click', function(evt){
@@ -170,9 +176,15 @@ init: function()
 			if (e.target.result && e.target.result.length > 0)
 			{
 				self.blockLivePreview = true;
-				self.importStyle(e.target.result);
+				var b = self.importStyle(e.target.result);
 				self.blockLivePreview = false;
 				self.previewStyle();
+				if (b) {
+					setTimeout(function(){
+						if (6 == window.external.ExtCall('OCMessageBox', "Do you want to save the imported style?", "Save Imported Style", 4|32))
+							$('#btn-save').click();	
+					}, 250);
+				}
 			}
 
 			return false;
@@ -718,7 +730,9 @@ importStyle: function(css)
 	{
 		select.selectedIndex = 0;
 		self.cssToUi(css);
+		return true;
 	}
+	return false;
 },
 
 copyStyle: function()

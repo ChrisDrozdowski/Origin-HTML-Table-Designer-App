@@ -91,7 +91,7 @@ public:
 		if( strFile.IsEmpty() )
 			return false;
 
-		return SaveCssFile(strFile, FormatCss(strCss));
+		return SaveCssFile(strFile, strCss);
 	}
 
 	string ImportStyle()
@@ -103,7 +103,7 @@ public:
 	bool PreviewStyle(string strCss)
 	{
 		string str = m_strPreview;
-		str.Replace("APP_STYLES", FormatStyle(strCss));
+		str.Replace("APP_STYLES", FormatCombinedStyle(strCss));
 
 		if( str.IsEmpty() )
 			return false;
@@ -126,7 +126,7 @@ public:
 
 	bool CopyStyle(string strCss)
 	{
-		string str = FormatStyle(strCss);
+		string str = FormatCombinedStyle(strCss);
 
 		if( IDYES == MessageBox(GetSafeHwnd(), "Is the destination syntax Markdown?", "Copy Style" , MB_YESNO) )
 			str.Replace(STR_HTML_TABLE_DESIGNER_ORIGIN_TABLE_CSS_CLASS, "");;
@@ -160,6 +160,19 @@ public:
 	void SaveSettings(string strJson)
 	{
 		SaveJsonConfigFile("settings.json", strJson);
+	}
+
+	// Javascript-callable MessageBox() wrapper providing more options that Javascript
+	// versions not the least of which that it allows dialog title to be set.
+	// See mswin.h for constants for type and return value.
+	int OCMessageBox(string strText, string strCaption, int nType = MB_OK)
+	{
+		if( strCaption.IsEmpty() )
+			strCaption = GetDialogTitle();
+
+		// int OWINAPI MessageBox( HWND hWnd, LPCSTR lpText, LPCSTR lpCaption = NULL, UINT uType = MB_OK );	// Open a Windows message box.
+		// See mswin.h for constants related to type and return values.
+		return MessageBox(GetSafeHwnd(), strText, strCaption, nType);
 	}
 
 protected:
@@ -268,7 +281,7 @@ protected:
 
 private:
 
-	string FormatStyle(const string& strCss)
+	string FormatCombinedStyle(const string& strCss)
 	{
 		string str;
 		str.Format("%s\n<style id=\"%s\">\n%s</style>\n%s\n",
@@ -595,6 +608,7 @@ BEGIN_DISPATCH_MAP(HTMLTableDesignerDlg, HTMLDlg)
 	DISP_FUNCTION(HTMLTableDesignerDlg, GetIntro, VTS_STR, VTS_VOID)
 	DISP_FUNCTION(HTMLTableDesignerDlg, SaveSettings, VTS_VOID, VTS_STR)
 	DISP_FUNCTION(HTMLTableDesignerDlg, CloseClick, VTS_BOOL, VTS_VOID)
+	DISP_FUNCTION(HTMLTableDesignerDlg, OCMessageBox, VTS_I4, VTS_STR VTS_STR VTS_I4)
 END_DISPATCH_MAP
 
 
