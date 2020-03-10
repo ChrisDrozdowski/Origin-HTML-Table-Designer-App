@@ -350,8 +350,7 @@ resetUi: function(firstTime)
 			}
 			else if (el.hasAttribute('data-initial'))
 			{
-				var value = el.getAttribute('data-value');
-				el.setAttribute('data-initial', value);
+				var value = el.getAttribute('data-initial');
 				el.value = value;
 			}
 
