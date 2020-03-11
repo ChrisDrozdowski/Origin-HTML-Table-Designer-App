@@ -204,18 +204,26 @@ public:
 
 		// Look for <body> element by searching for <body> because, if it exists,
 		// we will insert after </body> and return.
-		int nPosBody = strText.Find("<body>");
-		if (nPosBody > -1)
+		int nPosBodyStart = strText.Find("<body");
+		if (nPosBodyStart > -1)
 		{
-			strText.Insert(nPosBody + strlen("<body>"), strStyles);
+			int nPosBodyEnd = strText.Find(">", nPosBodyStart);
+			if (-1 == nPosBodyEnd)
+			{
+				ErrorMsg("Malformed <body> element.");
+				return false;
+			}
+
+			strText.Insert(nPosBodyEnd + 1, strStyles);
 			note.Text = strText;
 			return true;
 		}
 
-		// If no <head> or <body>, then we don't insert- HTML isn't
-		// complete enough error and return false.
-		ErrorMsg("The active HTML report does not contain either <head> or <body> elements. One of them is required to apply styles.");
-		return false;
+		// If no <head> or <body>, then insert at beginning.
+		string strNew;
+		strNew.Format("%s%s", strStyles, strText);
+		note.Text = strNew;
+		return true;
 	}
 
 	string GetIntro()
