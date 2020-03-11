@@ -66,13 +66,13 @@ init: function()
 		if (b) {
 			setTimeout(function(){
 				if (6 == window.external.ExtCall('OCMessageBox', "Do you want to save the imported style?", "Save Imported Style", 4|32))
-					$('#btn-save').click();	
+					$('#btn-save').click();
 			}, 250);
 		}
 	});
 
-	$('#btn-copy').on('click', function(evt){
-		self.copyStyle();
+	$('#btn-apply').on('click', function(evt){
+		self.applyStyle();
 	});
 
 	$('#btn-save').on('click', function(evt){
@@ -182,7 +182,7 @@ init: function()
 				if (b) {
 					setTimeout(function(){
 						if (6 == window.external.ExtCall('OCMessageBox', "Do you want to save the imported style?", "Save Imported Style", 4|32))
-							$('#btn-save').click();	
+							$('#btn-save').click();
 					}, 250);
 				}
 			}
@@ -734,12 +734,12 @@ importStyle: function(css)
 	return false;
 },
 
-copyStyle: function()
+applyStyle: function()
 {
 	var self = this,
 		css = self.uiToCss();
 
-	return window.external.ExtCall('CopyStyle', css); // Returns boolean.
+	return window.external.ExtCall('ApplyStyle', css); // Returns boolean.
 },
 
 

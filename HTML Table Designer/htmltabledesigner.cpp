@@ -119,21 +119,103 @@ public:
 		m_notePreview.CheckShowActivate();
 
 		// Set Notes window to HTML mode.
+		LT_execute("note.syntax=1;");
 		LT_execute("note.view=1;");
 
 		return true;
 	}
 
-	bool CopyStyle(string strCss)
+	bool ApplyStyle(string strCss)
 	{
-		string str = FormatCombinedStyle(strCss);
+		// Create the full styles to put into report.
+		string strStyles = FormatCombinedStyle(strCss);
 
-		if( IDYES == MessageBox(GetSafeHwnd(), "Is the destination syntax Markdown?", "Copy Style" , MB_YESNO) )
-			str.Replace(STR_HTML_TABLE_DESIGNER_ORIGIN_TABLE_CSS_CLASS, "");;
+		// Copy full styles to clipboard as a safety move.
+		copy_to_clipboard(strStyles, true, false);
 
-		bool bRet = copy_to_clipboard(str, true, false);
+		// Test if active window is a Note and is not the preview.
+		Note note = Project.Notes();
+		if (!note.IsValid())
+		{
+			ErrorMsg("An HTML report is not the active window.");
+			return false;
+		}
+		if (m_notePreview.IsValid() && note == m_notePreview)
+		{
+			ErrorMsg("Styles cannot be applied to the Preview window.");
+			return false;
+		}
 
-		return bRet;
+		// Get Note syntax and if not HTML or Markdown, error and return.
+		double syntax = 0;
+		LT_get_var("note.syntax", &syntax);
+		if (0 == syntax)
+		{
+			ErrorMsg("The Active Note window isn't set up as an HTML report. Its syntax is neither HTML nor Markdown.");
+			return false;
+		}
+
+		// If Markdown, need to remove class selector.
+		if (2 == syntax)
+			strStyles.Replace(STR_HTML_TABLE_DESIGNER_ORIGIN_TABLE_CSS_CLASS, "");
+
+		// Get text of Note window.
+		string strText = note.Text;
+
+		// Look for and replace any pre-existing App-based styles in Note text and return.
+		int nPosBegin = strText.Find(STR_HTML_TABLE_DESIGNER_STYLE_COMMENT_BEGIN);
+		if (nPosBegin > -1)
+		{
+			int nPosEnd = strText.Find(STR_HTML_TABLE_DESIGNER_STYLE_COMMENT_END, nPosBegin);
+			if (-1 == nPosEnd)
+			{
+				ErrorMsg("Unable to replace styles- missing delimter comment.");
+				return false;
+			}
+			nPosEnd += strlen(STR_HTML_TABLE_DESIGNER_STYLE_COMMENT_END) - 1;
+			string strNew = StripStyles(strText, nPosBegin, nPosEnd);
+			strNew.TrimLeft();
+			strStyles.TrimRight(); // It ends with \r\n and if left in, will keep adding them to content every time updated. So remove trailing \r\n's.
+			strNew.Insert(nPosBegin, strStyles);
+			note.Text = strNew;
+			return true;
+		}
+
+		// Otherwise, for Markdown syntax, Insert at beginning and return.
+		if (2 == syntax)
+		{
+			string strNew;
+			strNew.Format("%s%s", strStyles, strText);
+			note.Text = strNew;
+			return true;
+		}
+
+		// Otherwise, for HTML syntax...
+
+		// Look for <head> element by searching for </head> because, if it exists,
+		// we will insert before </head> and return.
+		int nPosHead = strText.Find("</head>");
+		if (nPosHead > -1)
+		{
+			strText.Insert(nPosHead, strStyles);
+			note.Text = strText;
+			return true;
+		}
+
+		// Look for <body> element by searching for <body> because, if it exists,
+		// we will insert after </body> and return.
+		int nPosBody = strText.Find("<body>");
+		if (nPosBody > -1)
+		{
+			strText.Insert(nPosBody + strlen("<body>"), strStyles);
+			note.Text = strText;
+			return true;
+		}
+
+		// If no <head> or <body>, then we don't insert- HTML isn't
+		// complete enough error and return false.
+		ErrorMsg("The active HTML report does not contain either <head> or <body> elements. One of them is required to apply styles.");
+		return false;
 	}
 
 	string GetIntro()
@@ -303,6 +385,44 @@ private:
 			strCss
 		);
 		return str;
+	}
+
+	string StripStyles(LPCSTR in, int nBegin, int nEnd)
+	{
+		if (nEnd <= nBegin)
+			return in;
+
+		string str;
+		int len = strlen(in) + nEnd - nBegin + 1;
+		LPSTR out = str.GetBuffer(len+1);
+		memset(out, 0, len+1);
+
+		int nPos = 0;
+		while (*in)
+		{
+			if (nPos == nBegin)
+			{
+				while (*in && nPos <= nEnd)
+				{
+					in++;
+					nPos++;
+				}
+				continue;
+			}
+
+			*out = *in;
+			out++;
+			in++;
+			nPos++;
+		}
+
+		str.ReleaseBuffer();
+		return str;
+	}
+
+	void ErrorMsg(LPCSTR msg)
+	{
+		MessageBox(GetSafeHwnd(), msg, GetDialogTitle(), MB_OK|MB_ICONEXCLAMATION);
 	}
 
 	string DoLoadStyle(string strName)
@@ -603,7 +723,7 @@ BEGIN_DISPATCH_MAP(HTMLTableDesignerDlg, HTMLDlg)
 	DISP_FUNCTION(HTMLTableDesignerDlg, ExportStyle, VTS_BOOL, VTS_STR VTS_STR)
 	DISP_FUNCTION(HTMLTableDesignerDlg, ImportStyle, VTS_STR, VTS_VOID)
 	DISP_FUNCTION(HTMLTableDesignerDlg, PreviewStyle, VTS_BOOL, VTS_STR)
-	DISP_FUNCTION(HTMLTableDesignerDlg, CopyStyle, VTS_BOOL, VTS_STR)
+	DISP_FUNCTION(HTMLTableDesignerDlg, ApplyStyle, VTS_BOOL, VTS_STR)
 	DISP_FUNCTION(HTMLTableDesignerDlg, LoadSettings, VTS_STR, VTS_VOID)
 	DISP_FUNCTION(HTMLTableDesignerDlg, GetIntro, VTS_STR, VTS_VOID)
 	DISP_FUNCTION(HTMLTableDesignerDlg, SaveSettings, VTS_VOID, VTS_STR)
