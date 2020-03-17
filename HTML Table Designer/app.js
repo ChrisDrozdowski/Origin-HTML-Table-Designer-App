@@ -358,6 +358,7 @@ resetUi: function(firstTime)
 			else if (el.hasAttribute('data-initial'))
 			{
 				var value = el.getAttribute('data-initial');
+				el.setAttribute('data-value', value);
 				el.value = value;
 			}
 
