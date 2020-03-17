@@ -15,6 +15,8 @@ isResetting: false,
 blockLivePreview: false,
 colorControlUpdateFunc: null, //function(el, color){},
 defaultName: "untitled",
+newName: "New",
+lastUsedName: "Last Used",
 
 //=================
 // Private methods.
@@ -214,7 +216,7 @@ buildStyleSelect: function(list, name)
 		option;
 
 	if (typeof name !== 'string' || name.length === 0)
-		name = 'New';
+		name = self.newName;
 
 	for (var i = (count - 1); i >= 0; i--)
 	{
@@ -222,8 +224,13 @@ buildStyleSelect: function(list, name)
 	}
 
 	option = document.createElement('option');
-	option.value = 'New';
-	option.appendChild(document.createTextNode('New'));
+	option.value = self.newName;
+	option.appendChild(document.createTextNode(self.newName));
+	select.appendChild(option);
+
+	option = document.createElement('option');
+	option.value = self.lastUsedName;
+	option.appendChild(document.createTextNode(self.lastUsedName));
 	select.appendChild(option);
 
 	for (var i = 0; i < list.length; i++)
@@ -392,14 +399,20 @@ onSelectStyle: function(evt)
 	// Refers to App object. Since this is an event, use App not this.
 	var self = App,
 		ctrl = evt.target,
-		option = ctrl.options[ctrl.selectedIndex],
+		index = ctrl.selectedIndex,
+		option = ctrl.options[index],
 		value = option.value,
 		css;
 
 	if (value.length === 0)
 		return;
 
-	css = self.loadStyle(value);
+	if (index == 0)
+		css = '';
+	else if (index == 1)
+		css = self.loadLastUsed();
+	else
+		css = self.loadStyle(value);
 
 	self.cssToUi(css);
 },
@@ -676,6 +689,16 @@ loadStyleList: function()
 	return list;
 },
 
+loadLastUsed: function()
+{
+	var self = this,
+		css;
+
+	css = window.external.ExtCall('LoadLastUsed');
+
+	return css;
+},
+
 loadStyle: function(name)
 {
 	var self = this,
@@ -737,9 +760,12 @@ importStyle: function(css)
 applyStyle: function()
 {
 	var self = this,
-		css = self.uiToCss();
+		css = self.uiToCss(),
+		ret = false;
 
-	return window.external.ExtCall('ApplyStyle', css); // Returns boolean.
+	ret = window.external.ExtCall('ApplyStyle', css); // Returns boolean.
+	window.external.ExtCall('SaveLastUsed', css);
+	return ret;
 },
 
 

@@ -12,5 +12,7 @@ run.file("%@AHTML Table Designer\package.ogs");
 // Have to compile this file first.
 if(run.LoadOC("OriginLab\OPXFile.cpp", 16) == 0)
 {
+	// Empty lastused.css before creating OPX file.
+	type -gbef "%@AHTML Table Designer\lastused.css";type -ge;
 	mkopx app:="HTML Table Designer" opx:="%YHTML Table Designer.opx";
 }

@@ -85,6 +85,16 @@ public:
 		return strName;
 	}
 
+	string LoadLastUsed()
+	{
+		return DoLoadLastUsed();
+	}
+
+	bool SaveLastUsed(string strCss)
+	{
+		return DoSaveLastUsed(strCss);
+	}
+
 	bool ExportStyle(string strName, string strCss)
 	{
 		string strFile = GetSaveAsBox("*.css Cascading Style Sheet File", NULL, strName);
@@ -513,6 +523,53 @@ private:
 		return bRet;
 	}
 
+	string DoLoadLastUsed()
+	{
+		string strCss;
+		string strName = "lastused.css";
+		string strTemp = __FILE__;
+		string strPath = GetFilePath(strTemp);
+		string strFile;
+		strFile.Format("%s/%s", strPath, strName);
+
+		if( strFile.IsFile() )
+		{
+			stdioFile ff;
+			if( ff.Open(strFile, file::modeRead | file::typeText) )
+			{
+				strCss = "";
+				string strLine;
+				while( ff.ReadString(strLine) )
+				{
+					strCss += strLine;
+				}
+				ff.Close();
+			}
+		}
+
+		return strCss;
+	}
+
+	bool DoSaveLastUsed(const string& strCss)
+	{
+		string strName = "lastused.css";
+		string strTemp = __FILE__;
+		string strPath = GetFilePath(strTemp);
+		string strFile;
+		strFile.Format("%s/%s", strPath, strName);
+
+		bool bRet = false;
+		stdioFile ff;
+		if( ff.Open(strFile, file::modeCreate | file::modeWrite | file::typeText) )
+		{
+			ff.WriteString(strCss);
+			ff.Close();
+			bRet = true;
+		}
+
+		return bRet;
+	}
+
 	string GetStyleList()
 	{
 		string strJson;
@@ -728,6 +785,8 @@ BEGIN_DISPATCH_MAP(HTMLTableDesignerDlg, HTMLDlg)
 	DISP_FUNCTION(HTMLTableDesignerDlg, LoadStyleList, VTS_STR, VTS_VOID)
 	DISP_FUNCTION(HTMLTableDesignerDlg, LoadStyle, VTS_STR, VTS_STR)
 	DISP_FUNCTION(HTMLTableDesignerDlg, SaveStyle, VTS_STR, VTS_STR VTS_STR)
+	DISP_FUNCTION(HTMLTableDesignerDlg, LoadLastUsed, VTS_STR, VTS_VOID)
+	DISP_FUNCTION(HTMLTableDesignerDlg, SaveLastUsed, VTS_BOOL, VTS_STR)
 	DISP_FUNCTION(HTMLTableDesignerDlg, ExportStyle, VTS_BOOL, VTS_STR VTS_STR)
 	DISP_FUNCTION(HTMLTableDesignerDlg, ImportStyle, VTS_STR, VTS_VOID)
 	DISP_FUNCTION(HTMLTableDesignerDlg, PreviewStyle, VTS_BOOL, VTS_STR)
