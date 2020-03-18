@@ -348,10 +348,22 @@ Important Note:	If you want to use nth-child(odd) or nth-child(even), don't!
 <fieldset>
 	<legend>Header Properties</legend>
 	<div>
-		<!-- Hidden and always on -->	
-		<div class="control-group hidden" data-css-selector="table.origin-table th:only-child:empty" data-css-property="display" data-js-property="display">
-			<!--<label title=""><input type="checkbox" class="" data-control data-enabler>Hide Empty Header Rows</label>-->
+		<!-- Hidden and always on -->
+		<div class="control-group hidden" data-css-selector="table.origin-table th:only-child:empty" data-css-property="border" data-js-property="border">
+			<!--<label title=""><input type="checkbox" class="" data-control data-enabler>Hide Empty Header Rows 1</label>-->
 			<input type="text" class="" title="" data-control data-const data-value="none" data-units="" data-index="0">
+		</div>
+
+		<!-- Hidden and always on -->
+		<div class="control-group hidden" data-css-selector="table.origin-table th:only-child:empty" data-css-property="margin" data-js-property="margin">
+			<!--<label title=""><input type="checkbox" class="" data-control data-enabler>Hide Empty Header Rows 2</label>-->
+			<input type="text" class="" title="" data-control data-const data-value="0" data-units="px" data-index="0">
+		</div>
+
+		<!-- Hidden and always on -->
+		<div class="control-group hidden" data-css-selector="table.origin-table th:only-child:empty" data-css-property="padding" data-js-property="padding">
+			<!--<label title=""><input type="checkbox" class="" data-control data-enabler>Hide Empty Header Rows 3</label>-->
+			<input type="text" class="" title="" data-control data-const data-value="0" data-units="px" data-index="0">
 		</div>
 
 		<div class="control-group" data-css-selector="table.origin-table th" data-css-property="background-color" data-js-property="backgroundColor">

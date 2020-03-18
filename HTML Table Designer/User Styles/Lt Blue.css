@@ -4,7 +4,9 @@ table.origin-table {
 }
 
 table.origin-table th:only-child:empty {
-	display: none;
+	border: none;
+	margin: 0px;
+	padding: 0px;
 }
 
 table.origin-table th {
